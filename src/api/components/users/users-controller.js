@@ -9,8 +9,20 @@ const { errorResponder, errorTypes } = require('../../../core/errors');
  * @returns {object} Response object or pass an error to the next route
  */
 async function getUsers(request, response, next) {
+  
   try {
-    const users = await usersService.getUsers();
+    const GoSearch = request.query.search; // search engine dengan search key string
+    const Sorttt = request.query.sort || 'email'; //sorting dengan email
+    const PageNumberHaha = (parseInt(request.query.page_number)) || 1; //page number harus bertipe integer dan bil positif, maka menggunakan parseInt dan default value nya adalah 1
+    const PageSizeHaha = (parseInt(request.query.page_size)) || Infinity; // page size harus bertipe integer dan bil positif, maka menggunakan parseInt. Default value nya adalah infinity karena kita tidak mengetahui berapa banyak jumlah user
+    
+    const users = await usersService.getUsers(
+      GoSearch,
+      Sorttt,
+      PageNumberHaha,
+      PageSizeHaha
+      
+    );
     return response.status(200).json(users);
   } catch (error) {
     return next(error);

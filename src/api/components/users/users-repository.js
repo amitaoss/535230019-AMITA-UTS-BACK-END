@@ -1,11 +1,27 @@
 const { User } = require('../../../models');
 
+
+async function Floptok(){
+  return User.find({});
+}
+
 /**
  * Get a list of users
  * @returns {Promise}
  */
-async function getUsers() {
-  return User.find({});
+async function getUsers(first, PageSizeHaha, GoSearch, Sorttt) {
+  const [field, substring] = (GoSearch || '').split(':'); // Menggunakan split(':') untuk memisahkan string GoSearch
+  const [sortField, sortDirection] = (Sorttt || '').split(':'); // Menggunakan split(':') untuk memisahkan string Sorttt
+  let ascdesc = 1;
+  if (sortDirection === 'desc') {
+    ascdesc = -1;
+  }
+
+  return User.find({ [field]: { $regex: `\\b${substring}\\b`, $options: 'i' } })
+    .sort({ [sortField]: ascdesc })
+    .skip(first)
+    .limit(PageSizeHaha)
+    .select('-password');
 }
 
 /**
@@ -89,4 +105,5 @@ module.exports = {
   deleteUser,
   getUserByEmail,
   changePassword,
+  Floptok,
 };

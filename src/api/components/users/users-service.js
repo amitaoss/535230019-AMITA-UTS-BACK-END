@@ -42,6 +42,63 @@ async function getUser(id) {
 }
 
 /**
+ * Get list of users
+ * @returns {Array}
+ */
+async function getUsers(GoSearch, Sorttt, PageNumberHaha, PageSizeHaha) {
+  const PagResults = {};
+  const Start = (PageNumberHaha - 1) * PageSizeHaha;
+  const End = PageNumberHaha * PageSizeHaha;
+  const OghOgh = await usersRepository.Floptok();
+  const Gokgok = OghOgh.length;
+
+  PagResults.page_number = {
+    PageNumberHaha,
+  };
+
+  PagResults.page_size = {
+    PageSizeHaha,
+  };
+
+  PagResults.OghOgh = {
+    OghOgh,
+  };
+
+  if (Start == 0 || PageNumberHaha == 0) { //Cek apakah ada halaman sebelumnya
+    PagResults.has_previous_page = {
+      has_previous_page: false,
+    };
+  } 
+  if (Start !==0 || PageNumber !== 0){
+    PagResults.has_previous_page = {
+      has_previous_page: true,
+    };
+  }
+  
+
+  if (End > OghOgh || PageNumberHaha == 0) { //Cek apakah ada halaman berikutnya
+    PagResults.has_next_page = {
+      has_next_page: false,
+    };
+  } 
+  if (End < OghOgh || PageNumberHaha !== 0) {
+    PagResults.has_next_page = {
+      has_next_page: true,
+    };
+  }
+
+  PagResults.data = await usersRepository.getUsers(
+    Start,
+    PageSizeHaha,
+    GoSearch,
+    Sorttt
+  );
+  return PagResults;
+}
+
+
+
+/**
  * Create new user
  * @param {string} name - Name
  * @param {string} email - Email
