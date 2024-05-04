@@ -2,6 +2,7 @@ const authenticationRepository = require('./authentication-repository');
 const { generateToken } = require('../../../utils/session-token');
 const { passwordMatched } = require('../../../utils/password');
 
+
 /**
  * Check username and password for login.
  * @param {string} email - Email
@@ -10,6 +11,7 @@ const { passwordMatched } = require('../../../utils/password');
  */
 async function checkLoginCredentials(email, password) {
   const user = await authenticationRepository.getUserByEmail(email);
+  
 
   // We define default user password here as '<RANDOM_PASSWORD_FILTER>'
   // to handle the case when the user login is invalid. We still want to
@@ -29,7 +31,7 @@ async function checkLoginCredentials(email, password) {
       token: generateToken(user.email, user.id),
     };
   }
-
+  
   return null;
 }
 
