@@ -1,51 +1,7 @@
 const usersRepository = require('./users-repository');
 const { hashPassword, passwordMatched } = require('../../../utils/password');
 
-/**
- * Get the number of failed login attempts for a user
- * @param {string} email - User email
- * @returns {number}
- */
-async function getFailedLoginAttempts(email) {
-  const user = await usersRepository.getUserByEmail(email);
 
-  if (!user) {
-    return 0;
-  }
-
-  return user.failed_login_attempts || 0;
-}
-
-/**
- * Increment angka attempt gagal login untuk user 
- * @param {string} email - User email
- * @returns {void}
- */
-async function incrementFailedLoginAttempts(email) {
-  const user = await usersRepository.getUserByEmail(email);
-
-  if (!user) {
-    return;
-  }
-
-  const failedLoginAttempts = user.failed_login_attempts || 0;
-  await usersRepository.updateUser(user.id, user.name, user.email, failedLoginAttempts + 1);
-}
-
-/**
- * Reset angka attempt gagal login untuk user
- * @param {string} email - User email
- * @returns {void}
- */
-async function resetFailedLoginAttempts(email) {
-  const user = await usersRepository.getUserByEmail(email);
-
-  if (!user) {
-    return;
-  }
-
-  await usersRepository.updateUser(user.id, user.name, user.email, 0);
-}
 
 
 /**
